@@ -1,6 +1,6 @@
-from flask import Flask, render_template_string, request
+from flask import Flask, render_template_string, request, render_template
 import folium
-from table_to_map import map_gen
+from table_to_map import map_gen, data_condition
 import pandas as pd
 import  numpy as np
 # create a flask application
@@ -32,58 +32,27 @@ def home():
         script = mapObj.get_root().script.render()
 
         # return a web page with folium map components embeded in it. You can also use render_template.
-        return render_template_string(
-            """
-                <!DOCTYPE html>
-                <html>
-                    <head>
-                        {{ header|safe }}
-                        <style>
-                            body{
-                                display:flex;
-                                flex-direction:column;
-                            }
-                            
-                            header{
-                                width:100%;
-                                height:15%;
-                                background-color:black;
-                                flex-direction: row;
-                                justify-content: center;
-                                align-items:center;
-                            }
-                            
-                            h1{
-                                color:white;
-                            }
-                        </style>
-                    </head>
-                    <body>
-                        <header>
-                            <h1> B-17 flying home </h1>    
-                        </header>
-                        
-                        {{ body_html|safe }}
-                        <form method = "post">
-                            <input type = "text" name = "min_year">
-                            <input type = "text" name = "max_year">
-                        </form>
-                        <script>
-                            {{ script|safe }}
-                        </script>
-                    </body>
-                </html>
-            """,
+        return render_template("map.html",
             header=header,
             body_html=body_html,
             script=script,
         )
-    #else:
-     #   min_year = request.form.get('min_year')
-      #  max_year = request.form.get('max_year')
-
-
-
+    else:
+        min_year = int(request.form.get('min_year'))
+        max_year = int(request.form.get('max_year'))
+        df = pd.read_csv('newCrash.csv')
+        df1 = df[np.isnan(df["latitude"]) != True]
+        date_df = data_condition(df1, min_year,max_year)
+        mapObj = map_gen(date_df)
+        mapObj.get_root().render()
+        header = mapObj.get_root().header.render()
+        body_html = mapObj.get_root().html.render()
+        script = mapObj.get_root().script.render()
+        return render_template("map.html",
+                               header=header,
+                               body_html=body_html,
+                               script=script,
+                               )
 
 
 if __name__ == "__main__":
