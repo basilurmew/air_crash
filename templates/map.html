@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+    <html>
+    <head>
+        {{ header|safe }}
+        <link rel="stylesheet" href="{{ url_for('static', filename='style_map.css') }}">
+    </head>
+                    <body>
+                        <header>
+                            <h1> B-17 flying home </h1>
+                        </header>
+                        <div id  = full>
+                        {{ body_html|safe }}
+                        <form method = "post">
+                            <input type = "text" name = "min_year">
+                            <input type = "text" name = "max_year">
+                            <input type="submit"  id="submitButton" value="Готово">
+                        </form>
+                        </div>
+                        <script>
+                            {{ script|safe }}
+                        </script>
+                    </body>
+                </html>
