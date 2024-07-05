@@ -8,16 +8,26 @@ from folium.plugins import MousePosition
 # Import folium DivIcon plugin
 from folium.features import DivIcon
 
+
+
+ressons_dict = {"weather":0, "engine":1, "people":2, "others":3}
+
+color_dict = {"weather":"yellow", "engine":"red", "people":"blue", "others":"green"}
+
+
+
 def data_condition(df1, lower_year, high_year):
-    dct = {"Date":[],"Time":[], "Location":[] ,"latitude":[], "longitude":[],"Summary":[]}
+    dct = {"Date":[],"Time":[], "Location":[] ,"latitude":[], "longitude":[],"Summary":[],"kmeans":[]}
     res = pd.DataFrame(dct)
     for index, row in df1.iterrows():
         if int(row["Date"][-4:]) > high_year:
             break
         if int(row["Date"][-4:]) >= lower_year:
-            l = [row["Date"], row["Time"], row["Location"], row["latitude"],row["longitude"], row["Summary"]]
+            l = [row["Date"], row["Time"], row["Location"], row["latitude"],row["longitude"], row["Summary"],row["kmeans"]]
             res.loc[len(res.index )] = l
     return res
+
+#def reason condition():
 
 
 def map_gen(df1):

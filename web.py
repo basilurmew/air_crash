@@ -13,7 +13,7 @@ def home():
 
         # тут код индуса идет, его не трогать!!!
 
-        df = pd.read_csv('newCrash.csv')
+        df = pd.read_csv('kmeans_data.csv')
 
         df1 = df[np.isnan(df["latitude"]) != True]
 
@@ -38,9 +38,14 @@ def home():
             script=script,
         )
     else:
-        min_year = int(request.form.get('min_year'))
-        max_year = int(request.form.get('max_year'))
-        df = pd.read_csv('newCrash.csv')
+        try:
+            min_year = int(request.form.get('min_year'))
+            max_year = int(request.form.get('max_year'))
+        except:
+            min_year = 1900
+            max_year = 2100
+        reasons = request.form.getlist('reason')
+        df = pd.read_csv('kmeans_data.csv')
         df1 = df[np.isnan(df["latitude"]) != True]
         date_df = data_condition(df1, min_year,max_year)
         mapObj = map_gen(date_df)

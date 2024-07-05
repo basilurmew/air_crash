@@ -6,13 +6,41 @@
     </head>
                     <body>
                         <header>
-                            <h1> B-17 flying home </h1>
+                            <h1>From "Wright Flyer III" to "Airbus A330"</h1>
                         </header>
                         <div id  = full>
-                        {{ body_html|safe }}
+
+                            {{ body_html|safe }}
+
+
                         <form method = "post">
                             <input type = "text" name = "min_year">
                             <input type = "text" name = "max_year">
+                            <hr>
+                            <label for="clusters">Алгоритм кластеризации</label>
+                            <select name="clusters" id="clusters">
+                                <option value="kmeans">K-Means</option>
+                                <option value="key-words">Key-Words</option>
+                                <option value="DBscan">DBscan</option>
+                            </select>
+                            <hr>
+                            <h2>Причина крушения</h2>
+                            <div>
+                                <input type="checkbox" id="weather" name="reason" checked />
+                                <label for="weather">Погода</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="people" name="reason" />
+                                <label for="people">Человеческий фактор</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="engine" name="reason" />
+                                <label for="engine">Технические неполадки</label>
+                            </div>
+                            <div>
+                                <input type="checkbox" id="others" name="reason"/>
+                                <label for="others">Другие</label>
+                            </div>
                             <input type="submit"  id="submitButton" value="Готово">
                         </form>
                         </div>
